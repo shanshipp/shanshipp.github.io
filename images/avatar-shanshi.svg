@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Shanshi monogram</title>
+  <desc id="desc">A professional blue monogram avatar with the letter S.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#173a5e"/>
+      <stop offset="1" stop-color="#2f7f93"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="256" fill="url(#bg)"/>
+  <circle cx="256" cy="256" r="205" fill="none" stroke="#ffffff" stroke-opacity="0.22" stroke-width="3"/>
+  <text x="256" y="326" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="220" font-weight="700" fill="#ffffff">S</text>
+</svg>
