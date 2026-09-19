@@ -5,61 +5,61 @@ title: "Day 02 — Tensor Shape, Linear Maps & Gradients / 张量形状、线性
 author_profile: true
 ---
 
-Day 02 connects PyTorch tensor operations with the mathematics behind a linear layer. The central thread is:
+Day 02 把 PyTorch Tensor 操作与线性层背后的数学连接起来，主线是：
 
 ```text
 Shape -> Broadcasting -> Matrix Multiplication -> Y = XW + b
       -> Loss -> Gradient -> Parameter Update
 ```
 
-## 1. Read the meaning before the numbers
+## 1. 先读维度语义，再看数字
 
-For an image batch `x.shape == [32,3,224,224]`, the dimensions mean `[B,C,H,W]`: batch, channel, height, and width.
+对图像 Batch `x.shape == [32,3,224,224]`，`[B,C,H,W]` 分别表示 Batch、Channel、Height 和 Width。
 
-| Expression | Output shape | Interpretation |
+| 表达式 | 输出 Shape | 含义 |
 |---|---|---|
-| `x[0]` | `[3,224,224]` | select one image; the batch dimension disappears |
-| `x[:,0]` | `[32,224,224]` | select one channel from every image |
-| `x[:8]` | `[8,3,224,224]` | keep the first eight images |
-| `x[:,:,:32,:32]` | `[32,3,32,32]` | crop the same region from every image |
+| `x[0]` | `[3,224,224]` | 选一张图，Batch 维消失 |
+| `x[:,0]` | `[32,224,224]` | 取每张图的第一个通道 |
+| `x[:8]` | `[8,3,224,224]` | 保留前八张图 |
+| `x[:,:,:32,:32]` | `[32,3,32,32]` | 从每张图裁取相同区域 |
 
-A concrete index usually removes a dimension; a slice usually preserves it.
+具体 index 通常删除对应维度，slice 通常保留对应维度。
 
-Three shape operations answer different questions:
+三类 Shape 操作回答不同问题：
 
-- `view` / `reshape`: how should the same elements be grouped?
-- `permute`: in what order should the axes appear?
-- `unsqueeze` / `squeeze`: where should a length-one dimension be added or removed?
+- `view` / `reshape`：同一批元素应如何重新分组？
+- `permute`：各个轴应按什么顺序排列？
+- `unsqueeze` / `squeeze`：在哪里增加或删除长度为 `1` 的维度？
 
 ```python
 x_flat = x.view(x.shape[0], -1)   # [32,3,224,224] -> [32,150528]
 x_bhwc = x.permute(0, 2, 3, 1)   # [B,C,H,W] -> [B,H,W,C]
 ```
 
-Flattening preserves the number and type of elements. Here both tensors contain `4,816,896` `float32` values.
+Flatten 不改变元素总数和数据类型；这里两个 Tensor 都包含 `4,816,896` 个 `float32` 元素。
 
-## 2. Broadcasting: align from the right
+## 2. Broadcasting：从最右侧对齐
 
-When two shapes differ, compare dimensions from right to left. A pair is compatible when the sizes are equal or one side is `1`; missing leading dimensions can be treated as `1`.
+两个 Shape 不同时，从右向左逐维比较。对应维度相同或其中一方为 `1` 时兼容；缺少的左侧维度可以视为 `1`。
 
 ```text
 [32,768] + [768]  -> [32,768]
 [32,768] + [32,1] -> [32,768]
-[32,768] + [32]   -> incompatible
+[32,768] + [32]   -> 不兼容
 [2,3,4] + [3,1]   -> [2,3,4]
 ```
 
-The first case has a useful model interpretation: 32 samples each have 768 features, and the same 768-dimensional bias vector is added to every sample.
+第一种情况的模型语义是：32 个样本各有 768 个特征，同一个 768 维 bias 向量被加到每个样本上。
 
-## 3. Matrix multiplication and a linear layer
+## 3. 矩阵乘法与线性层
 
-For two-dimensional tensors:
+二维 Tensor 的矩阵乘法规则是：
 
 ```text
 [a,b] @ [b,c] -> [a,c]
 ```
 
-The inner dimensions must match. In deep-learning notation:
+中间两个维度必须相同。用深度学习语义表示：
 
 ```text
 [Batch, Input Features] @ [Input Features, Output Features]
@@ -73,13 +73,13 @@ b = torch.randn(128)
 Y = X @ W + b
 ```
 
-`W` maps each 784-dimensional input to 128 output features. Broadcasting then adds the 128 bias values to each of the 32 samples. This is the core idea behind `nn.Linear(784, 128)`.
+`W` 把每个 784 维输入映射到 128 个输出特征；Broadcasting 再把 128 个 bias 加到 32 个样本中的每一个。这就是理解 `nn.Linear(784, 128)` 的核心。
 
-Do not confuse the operators: `*` is element-wise multiplication, while `@` is matrix multiplication.
+易错点：`*` 是逐元素乘法，`@` 才是矩阵乘法。
 
-## 4. Reduction, max, and argmax
+## 4. Reduction、max 与 argmax
 
-For `scores.shape == [32,10]`:
+对 `scores.shape == [32,10]`：
 
 ```text
 scores.mean()                    -> []
@@ -88,26 +88,26 @@ scores.mean(dim=1)               -> [32]
 scores.mean(dim=1, keepdim=True) -> [32,1]
 ```
 
-A reduction removes the selected dimension by default. `keepdim=True` retains it with length `1`, which is often convenient for later broadcasting.
+Reduction 默认删除被归约的维度。`keepdim=True` 会保留该维，但长度变为 `1`，便于后续 Broadcasting。
 
 ```python
 max_values, max_indices = scores.max(dim=1)
 predicted_classes = scores.argmax(dim=1)
 ```
 
-All three results have shape `[32]`: one result per sample. `max` can return both values and indices; `argmax` returns only the indices. For class scores, those indices are the predicted class IDs.
+三者的 Shape 都是 `[32]`，即每个样本得到一个结果。`max` 可同时返回最大值和下标；`argmax` 只返回下标。对分类分数而言，这些下标就是预测类别编号。
 
-## 5. From derivatives to gradients
+## 5. 从导数到梯度
 
-A derivative measures local change. For `y=x²`,
+导数描述单变量函数在某点附近的变化率。对 `y=x²`：
 
 $$
 \frac{dy}{dx}=2x.
 $$
 
-At `x=5`, the derivative is `10`: a small change in `x` produces approximately ten times that change in `y`.
+在 `x=5` 时，导数为 `10`：`x` 的微小变化会使 `y` 近似以十倍速度变化。
 
-For a multivariable function, a partial derivative changes one variable while treating the others as constants:
+对多变量函数求某个变量的偏导时，暂时把其他变量视为常数：
 
 $$
 z=x^2+y^2,\qquad
@@ -115,29 +115,29 @@ z=x^2+y^2,\qquad
 \frac{\partial z}{\partial y}=2y.
 $$
 
-The gradient collects the loss derivatives with respect to all parameters. For
+Gradient 是 Loss 对各参数偏导数组成的向量。对
 
 $$
 L(w_1,w_2)=w_1^2+w_2^2,
 $$
 
-the gradient at `(3,4)` is `[6,8]`. With learning rate `0.1`:
+在 `(3,4)` 处，Gradient 为 `[6,8]`。学习率取 `0.1`：
 
 $$
 [3,4]-0.1[6,8]=[2.4,3.2],
 $$
 
-and the loss falls from `25` to `16`. This illustrates the basic update rule: move parameters in the negative-gradient direction.
+Loss 从 `25` 降到 `16`。这体现了基本更新规则：沿负梯度方向移动参数。
 
-## 6. Chain rule and a squared-error loss
+## 6. Chain Rule 与平方误差
 
-The chain rule differentiates a complex expression by splitting it into simple steps. For
+Chain Rule 把复杂表达式拆成简单步骤再求导。对
 
 $$
 L=(wx+b-y)^2,
 $$
 
-the parameter gradients are
+参数梯度为
 
 $$
 \frac{\partial L}{\partial w}=2(wx+b-y)x,
@@ -145,21 +145,21 @@ $$
 \frac{\partial L}{\partial b}=2(wx+b-y).
 $$
 
-Using `x=2,w=3,b=1,y=10`: prediction `=7`, error `=-3`, loss `=9`, `∂L/∂w=-12`, and `∂L/∂b=-6`.
+代入 `x=2,w=3,b=1,y=10`：prediction `=7`，error `=-3`，loss `=9`，`∂L/∂w=-12`，`∂L/∂b=-6`。
 
 ```text
 Prediction -> Error -> Loss -> Gradient -> Parameter Update
 ```
 
-The chain rule is the mathematical bridge to computational graphs and backpropagation, which are the next topics to study.
+Chain Rule 是通向 Computational Graph 与 Backpropagation 的数学桥梁，也是下一阶段的学习重点。
 
-## Quick checklist
+## 核心检查清单
 
-- Explain every dimension before manipulating a tensor.
-- Check broadcasting compatibility from the right.
-- Preserve the batch dimension when flattening samples.
-- Remember `[B,I] @ [I,O] -> [B,O]`.
-- Reduction removes a dimension unless `keepdim=True`.
-- Gradient descent updates parameters opposite the gradient.
+- 操作 Tensor 前先解释每个维度的语义。
+- 从右侧检查 Broadcasting 是否兼容。
+- Flatten 样本时保留 Batch 维。
+- 记住 `[B,I] @ [I,O] -> [B,O]`。
+- Reduction 默认删维，除非使用 `keepdim=True`。
+- Gradient Descent 沿梯度反方向更新参数。
 
 [← Back to Experience / 返回经验页](/experience/)
