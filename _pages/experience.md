@@ -14,3 +14,4 @@ This section collects concise, reproducible notes from hands-on learning and res
 | Entry | Topics | Status |
 |---|---|---|
 | [Day 01 — Foundations](/experience/day01/) | WSL & PyTorch environment, ML fundamentals, Tensor operations, HPC workflow | Completed |
+| [Day 02 — Tensor Shape, Linear Maps & Gradients](/experience/day02/) | Broadcasting, matrix multiplication, linear layers, derivatives, gradients, chain rule | Completed |
