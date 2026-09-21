@@ -5,6 +5,8 @@ title: "Day 01 — Foundations / 基础"
 author_profile: true
 ---
 
+![Day 1 思维导图：环境、机器学习基础、Tensor 与 HPC](/images/learning/day01-mindmap.svg)
+
 ## 三个核心目标
 
 - [x] 跑通 WSL2 + RTX 5060 Ti 的 PyTorch GPU 环境。

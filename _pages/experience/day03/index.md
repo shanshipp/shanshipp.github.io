@@ -5,6 +5,8 @@ title: "Day 03 — Autograd, Training Loop & MLP / 自动求导、训练闭环�
 author_profile: true
 ---
 
+![Day 3 思维导图：Autograd、线性回归、神经网络与分类训练](/images/learning/day03-mindmap.svg)
+
 Day 03 把前一天的梯度与链式法则，连接到 PyTorch 真正的模型训练过程：
 
 ```text

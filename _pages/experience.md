@@ -7,7 +7,7 @@ author_profile: true
 
 This section collects concise, reproducible notes from hands-on learning and research engineering. Each entry records what was actually configured, learned, and verified.
 
-这里整理经过实际配置、学习和验证的技术笔记。内容以快速复习和复现为目标，不追求把每个主题写成完整教程。
+这里整理经过实际配置、学习和验证的技术笔记。内容以快速复习和复现为目标，不追求把每个主题写成完整教程；每个学习日均在首屏提供思维导图，便于快速建立知识结构。
 
 ## Learning Notes / 学习笔记
 

@@ -5,6 +5,8 @@ title: "Day 02 — Tensor Shape, Linear Maps & Gradients / 张量形状、线性
 author_profile: true
 ---
 
+![Day 2 思维导图：Shape、Broadcasting、Linear 与 Gradient](/images/learning/day02-mindmap.svg)
+
 Day 02 把 PyTorch Tensor 操作与线性层背后的数学连接起来，主线是：
 
 ```text
