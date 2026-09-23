@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="790" viewBox="0 0 1440 790" role="img" aria-labelledby="title desc">
+  <title id="title">Day 4 思维导图：从样本到可复现训练</title>
+  <desc id="desc">FashionMNIST 经 Dataset 和 DataLoader 组成批次，展平后进入 MLP；训练更新参数，评估检查泛化，模型状态和 Checkpoint 支持推理与续训。</desc>
+  <rect width="1440" height="790" rx="28" fill="#f8fafc"/>
+  <text x="720" y="58" text-anchor="middle" font-family="Arial,'Microsoft YaHei',sans-serif" font-size="32" font-weight="700" fill="#0f172a">Day 4 · 从数据到可复现训练</text>
+  <g font-family="Arial,'Microsoft YaHei',sans-serif">
+    <rect x="70" y="115" width="370" height="210" rx="22" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
+    <text x="100" y="160" font-size="27" font-weight="700" fill="#1e3a8a">1 · Data</text>
+    <text x="100" y="204" font-size="20" fill="#1e40af">Dataset → (image, label)</text>
+    <text x="100" y="242" font-size="20" fill="#1e40af">DataLoader → Batch 64</text>
+    <text x="100" y="280" font-size="20" fill="#1e40af">[B,1,28,28] → [B,784]</text>
+
+    <rect x="535" y="115" width="370" height="210" rx="22" fill="#ede9fe" stroke="#7c3aed" stroke-width="3"/>
+    <text x="565" y="160" font-size="27" font-weight="700" fill="#4c1d95">2 · Train</text>
+    <text x="565" y="204" font-size="20" fill="#5b21b6">MLP → logits [B,10]</text>
+    <text x="565" y="242" font-size="20" fill="#5b21b6">Loss → backward → step</text>
+    <text x="565" y="280" font-size="20" fill="#5b21b6">938 batches / epoch</text>
+
+    <rect x="1000" y="115" width="370" height="210" rx="22" fill="#d1fae5" stroke="#059669" stroke-width="3"/>
+    <text x="1030" y="160" font-size="27" font-weight="700" fill="#064e3b">3 · Evaluate</text>
+    <text x="1030" y="204" font-size="20" fill="#065f46">eval() + no_grad()</text>
+    <text x="1030" y="242" font-size="20" fill="#065f46">Accuracy = correct / total</text>
+    <text x="1030" y="280" font-size="20" fill="#065f46">Train vs held-out data</text>
+
+    <path d="M440 220 H535 M905 220 H1000" stroke="#64748b" stroke-width="5" fill="none"/>
+    <path d="M720 325 V400" stroke="#64748b" stroke-width="5" fill="none"/>
+
+    <rect x="315" y="400" width="810" height="115" rx="28" fill="#0f172a"/>
+    <text x="720" y="449" text-anchor="middle" font-size="25" font-weight="700" fill="white">实测：Loss 0.5256 → 0.3324</text>
+    <text x="720" y="486" text-anchor="middle" font-size="21" fill="#cbd5e1">Train Acc 87.83% · 评估 Acc 86.85%（第 3 轮）</text>
+
+    <path d="M565 515 L380 585 M875 515 L1060 585" stroke="#64748b" stroke-width="5" fill="none"/>
+    <rect x="85" y="585" width="570" height="145" rx="22" fill="#ffedd5" stroke="#ea580c" stroke-width="3"/>
+    <text x="115" y="630" font-size="25" font-weight="700" fill="#9a3412">4 · Save &amp; infer</text>
+    <text x="115" y="672" font-size="20" fill="#9a3412">model.state_dict → load → 单图预测</text>
+    <text x="115" y="705" font-size="19" fill="#9a3412">[1,1,28,28] → [1,10] → label 9</text>
+    <rect x="785" y="585" width="570" height="145" rx="22" fill="#fce7f3" stroke="#db2777" stroke-width="3"/>
+    <text x="815" y="630" font-size="25" font-weight="700" fill="#9d174d">5 · Resume &amp; compare</text>
+    <text x="815" y="672" font-size="20" fill="#9d174d">Checkpoint = model + optimizer + epoch</text>
+    <text x="815" y="705" font-size="19" fill="#9d174d">三组 LR 对比待实测；固定 seed 降低干扰</text>
+  </g>
+</svg>
