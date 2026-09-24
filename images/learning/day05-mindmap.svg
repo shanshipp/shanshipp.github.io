@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="790" viewBox="0 0 1440 790" role="img" aria-labelledby="title desc">
+  <title id="title">Day 5 思维导图：从空间结构到 CNN 分类</title>
+  <desc id="desc">保留图像空间结构，经过卷积和池化提取特征，展平后分类；验证形状、参数量、训练结果和特征图。</desc>
+  <rect width="1440" height="790" rx="28" fill="#f8fafc"/>
+  <g font-family="Arial,'Microsoft YaHei',sans-serif">
+    <text x="720" y="58" text-anchor="middle" font-size="32" font-weight="700" fill="#0f172a">Day 5 · 从空间结构到 CNN 分类</text>
+    <rect x="65" y="110" width="385" height="196" rx="22" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
+    <text x="95" y="156" font-size="26" font-weight="700" fill="#1e3a8a">1 · 图像与卷积</text>
+    <text x="95" y="200" font-size="20" fill="#1e40af">[B,1,28,28] 保留 H × W</text>
+    <text x="95" y="238" font-size="20" fill="#1e40af">局部连接 + 权重共享</text>
+    <text x="95" y="276" font-size="20" fill="#1e40af">Kernel → Feature Maps</text>
+    <rect x="527" y="110" width="385" height="196" rx="22" fill="#ede9fe" stroke="#7c3aed" stroke-width="3"/>
+    <text x="557" y="156" font-size="26" font-weight="700" fill="#4c1d95">2 · 逐层 Shape</text>
+    <text x="557" y="200" font-size="20" fill="#5b21b6">Conv 1→32 → Pool 28→14</text>
+    <text x="557" y="238" font-size="20" fill="#5b21b6">Conv 32→64 → Pool 14→7</text>
+    <text x="557" y="276" font-size="20" fill="#5b21b6">Flatten 3136 → logits 10</text>
+    <rect x="989" y="110" width="385" height="196" rx="22" fill="#d1fae5" stroke="#059669" stroke-width="3"/>
+    <text x="1019" y="156" font-size="26" font-weight="700" fill="#064e3b">3 · 训练与评估</text>
+    <text x="1019" y="200" font-size="20" fill="#065f46">复用 Day 4 训练循环</text>
+    <text x="1019" y="238" font-size="20" fill="#065f46">CNN · CUDA · 3 Epoch</text>
+    <text x="1019" y="276" font-size="20" fill="#065f46">421,642 个可训练参数</text>
+    <path d="M450 208 H527 M912 208 H989" stroke="#64748b" stroke-width="5" fill="none"/>
+    <path d="M720 306 V372" stroke="#64748b" stroke-width="5" fill="none"/>
+    <rect x="296" y="372" width="848" height="128" rx="27" fill="#0f172a"/>
+    <text x="720" y="420" text-anchor="middle" font-size="24" font-weight="700" fill="white">实测：CNN 评估 89.69% · MLP 评估 86.52%</text>
+    <text x="720" y="462" text-anchor="middle" font-size="20" fill="#cbd5e1">官方测试集作评估；本次差 3.17 个百分点</text>
+    <path d="M560 500 L367 568 M880 500 L1073 568" stroke="#64748b" stroke-width="5" fill="none"/>
+    <rect x="74" y="568" width="586" height="160" rx="22" fill="#ffedd5" stroke="#ea580c" stroke-width="3"/>
+    <text x="104" y="613" font-size="25" font-weight="700" fill="#9a3412">4 · Feature Map</text>
+    <text x="104" y="655" font-size="19" fill="#9a3412">单图 → [1,32,28,28]</text>
+    <text x="104" y="691" font-size="19" fill="#9a3412">本次使用随机初始化卷积层</text>
+    <rect x="780" y="568" width="586" height="160" rx="22" fill="#fef3c7" stroke="#d97706" stroke-width="3"/>
+    <text x="810" y="613" font-size="25" font-weight="700" fill="#92400e">5 · 实验边界</text>
+    <text x="810" y="655" font-size="19" fill="#92400e">参数量与随机性未严格匹配</text>
+    <text x="810" y="691" font-size="19" fill="#92400e">下次观察训练后的卷积特征</text>
+  </g>
+</svg>
