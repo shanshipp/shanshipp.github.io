@@ -18,3 +18,6 @@ This section collects concise, reproducible notes from hands-on learning and res
 | [Day 03 — Autograd, Training Loop & MLP](/experience/day03/) | Computational graphs, automatic differentiation, SGD, neural-network modules, MLP, classification loop | Completed |
 | [Day 04 — Data, Training & Evaluation](/experience/day04/) | FashionMNIST, mini-batches, training metrics, evaluation, model saving and inference | Core workflow completed; learning-rate comparison pending |
 | [Day 05 — Convolution & CNN](/experience/day05/) | Spatial structure, convolution shapes, FashionMNIST CNN, model comparison and feature maps | Core workflow completed; trained feature maps pending |
+| [Day 06 — BatchNorm & ResNet](/experience/day06/) | RGB preprocessing, BatchNorm, residual blocks and experimental evidence | Core concepts completed; four runs confirmed, metrics pending |
+| [Day 07 — Review & Roadmap](/experience/day07/) | Progress review, gradient direction and the next learning stage | Transition completed; historical logs not reverified |
+| [Day 08 — SGD, Momentum & Adam](/experience/day08/) | Update rules, controlled comparison, validation split and CSV records | Core theory and three optimizer runs completed |
